@@ -14,8 +14,9 @@ android {
                 arguments '-DANDROID_STL=c++_static',
                     // Extra custom variable to
                     // trigger workaround code.
-                    '-DHELLOJNI_ANDROID_STUDIO=1',
-                    '-DCMAKE_VERBOSE_MAKEFILE=1'
+                    '-DHELLOJNI_ANDROID_STUDIO=ON',
+                    '-DCMAKE_VERBOSE_MAKEFILE=ON',
+                    '-DHUNTER_STATUS_DEBUG=ON'
             }
         }
 

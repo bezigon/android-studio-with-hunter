@@ -22,6 +22,7 @@
 #include <iomanip>
 
 #include <md5/md5.h>
+#include "messages/messages.pb.h"
 
 /* This is a trivial JNI example where we use a native method
  * to return a new VM String. See the corresponding Java source
@@ -88,6 +89,9 @@ Java_com_example_hellojni_HelloJni_calculateMD5(JNIEnv* env, jobject thiz, jstri
   for (int i=0; i<DIGEST_SIZE; ++i) {
     stream << std::setw(2) << std::setfill('0') << static_cast<unsigned>(digest[i]);
   }
+
+  hunter_example::Message m;
+  std::cout << "Hunter example" << std::endl;
 
   return (*env).NewStringUTF(stream.str().c_str());
 }

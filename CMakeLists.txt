@@ -23,8 +23,9 @@ option(HUNTER_STATUS_DEBUG "Print debug info" ON)
 
 include(cmake/HunterGate.cmake)
 HunterGate(
-    URL "https://github.com/ruslo/hunter/archive/v0.23.3.tar.gz"
-    SHA1 "2c421912930d183c24512590014f955ff073424b"
+    URL "https://github.com/ruslo/hunter/archive/v0.23.76.tar.gz"
+    SHA1 "c7b60993e841850e2c449afd454f5d5aa4ec04e4"
+    LOCAL
 )
 
 project(hello-jni)
@@ -42,4 +43,19 @@ set_target_properties(hello-jni PROPERTIES DEBUG_POSTFIX "")
 hunter_add_package(md5)
 find_package(md5 CONFIG REQUIRED)
 
-target_link_libraries(hello-jni PUBLIC md5::md5)
+# If we cross compile for Android or iOS build a separate protoc executable on host to compile .proto files in CMake
+if(IOS OR ANDROID)
+  include(hunter_experimental_add_host_project)
+  hunter_experimental_add_host_project(cmake/host)
+
+  add_executable(protobuf::protoc IMPORTED)
+  set_target_properties(protobuf::protoc PROPERTIES IMPORTED_LOCATION "${HUNTER_HOST_ROOT}/bin/protoc")
+endif(IOS OR ANDROID)
+
+hunter_add_package(Protobuf)
+
+find_package(Protobuf CONFIG REQUIRED)
+
+add_subdirectory(messages)
+
+target_link_libraries(hello-jni PUBLIC md5::md5 messages log)

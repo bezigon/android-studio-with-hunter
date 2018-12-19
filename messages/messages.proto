@@ -1,0 +1,8 @@
+syntax = "proto2";
+//option optimize_for = LITE_RUNTIME;
+package hunter_example;
+
+message Message {
+    optional string line = 1;
+    repeated string lines = 2 [weak = true];
+}
